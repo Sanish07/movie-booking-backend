@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: movie-service
+
+server:
+  port: 8081
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
