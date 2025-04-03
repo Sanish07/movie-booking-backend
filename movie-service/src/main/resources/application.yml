@@ -19,3 +19,7 @@ management:
   info:
     git:
       mode: "full"
+
+
+dummy:
+  text: "This is dummy line"
