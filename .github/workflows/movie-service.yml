@@ -11,11 +11,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./movie-service
     defaults:
       run:
-        working-directory: ${{ env.working-directory }}
+        working-directory: movie-service
     steps:
       - uses: actions/checkout@v4
 
