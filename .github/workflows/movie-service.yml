@@ -5,7 +5,7 @@ on:
     paths:
       - movie-service/**
     branches:
-      - '**'
+      - master
 
 jobs:
   build:
