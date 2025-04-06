@@ -21,6 +21,9 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "movie_number")
+    private String movieNumber;
+
     private String title;
 
     @Column(columnDefinition = "TEXT")
