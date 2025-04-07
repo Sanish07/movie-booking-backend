@@ -1,4 +1,4 @@
-package com.sanish.movie_service.dtos;
+package com.sanish.movie_service.dtos.ResponseDtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

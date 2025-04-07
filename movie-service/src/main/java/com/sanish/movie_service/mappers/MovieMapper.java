@@ -17,4 +17,17 @@ public class MovieMapper {
             movie.getPosterUrl()
         );
     }
+
+    public static Movie mapToMovie(MovieDto movieDto) {
+        return Movie.builder()
+                .movieNumber(movieDto.getMovieNumber())
+                .title(movieDto.getTitle())
+                .description(movieDto.getDescription())
+                .genre(movieDto.getGenre())
+                .durationMinutes(movieDto.getDurationMinutes())
+                .releaseDate(movieDto.getReleaseDate())
+                .language(movieDto.getLanguage())
+                .posterUrl(movieDto.getPosterUrl())
+                .build();
+    }
 }

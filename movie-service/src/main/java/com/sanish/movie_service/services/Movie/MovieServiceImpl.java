@@ -3,6 +3,7 @@ package com.sanish.movie_service.services.Movie;
 import com.sanish.movie_service.dtos.Movie.PagedResult;
 import com.sanish.movie_service.dtos.Movie.MovieDto;
 import com.sanish.movie_service.entities.Movie;
+import com.sanish.movie_service.exceptions.ResourceAlreadyExistsException;
 import com.sanish.movie_service.exceptions.ResourceNotFoundException;
 import com.sanish.movie_service.mappers.MovieMapper;
 import com.sanish.movie_service.repositories.MovieRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -54,19 +56,41 @@ public class MovieServiceImpl implements MovieService{
     @Override
     public MovieDto getMovieByMovieNumber(String movieNumber) {
         MovieDto fetchedMovie = movieRepository.findByMovieNumber(movieNumber).map(MovieMapper::mapToMovieDto)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie", "movie-number", movieNumber));
+                .orElseThrow(() -> new ResourceNotFoundException("Movie", "movieNumber", movieNumber));
 
         return fetchedMovie;
     }
 
     @Override
     public void addNewMovie(MovieDto movieDto) {
+        //Check if new movie addition request number already exists in database
+        Optional<Movie> movie = movieRepository.findByMovieNumber(movieDto.getMovieNumber());
 
+        //If movie already exists with requested movie number, throw exception
+        if(movie.isPresent()){
+            throw new ResourceAlreadyExistsException("Movie", "movieNumber", movieDto.getMovieNumber());
+        }
+
+        Movie convertedMovieObj = MovieMapper.mapToMovie(movieDto);
+        convertedMovieObj.setCreatedAt(LocalDateTime.now());
+        convertedMovieObj.setUpdatedAt(LocalDateTime.now());
+
+        movieRepository.save(convertedMovieObj);
     }
 
     @Override
     public void updateMovieDetails(MovieDto movieDto) {
+        Optional<Movie> movie = movieRepository.findByMovieNumber(movieDto.getMovieNumber());
 
+        if(movie.isEmpty()){
+            throw new ResourceNotFoundException("Movie", "movieNumber", movieDto.getMovieNumber());
+        }
+
+        Movie convertedMovieObj = MovieMapper.mapToMovie(movieDto);
+        convertedMovieObj.setId(movie.get().getId());
+        convertedMovieObj.setUpdatedAt(LocalDateTime.now());
+
+        movieRepository.save(convertedMovieObj);
     }
 
     @Override
