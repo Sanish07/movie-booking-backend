@@ -3,6 +3,7 @@ package com.sanish.movie_service.services.Movie;
 import com.sanish.movie_service.dtos.Movie.PagedResult;
 import com.sanish.movie_service.dtos.Movie.MovieDto;
 import com.sanish.movie_service.entities.Movie;
+import com.sanish.movie_service.exceptions.ResourceNotFoundException;
 import com.sanish.movie_service.mappers.MovieMapper;
 import com.sanish.movie_service.repositories.MovieRepository;
 import jakarta.transaction.Transactional;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -49,8 +52,11 @@ public class MovieServiceImpl implements MovieService{
     }
 
     @Override
-    public MovieDto getMovieById(Long id) {
-        return null;
+    public MovieDto getMovieByMovieNumber(String movieNumber) {
+        MovieDto fetchedMovie = movieRepository.findByMovieNumber(movieNumber).map(MovieMapper::mapToMovieDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie", "movie-number", movieNumber));
+
+        return fetchedMovie;
     }
 
     @Override

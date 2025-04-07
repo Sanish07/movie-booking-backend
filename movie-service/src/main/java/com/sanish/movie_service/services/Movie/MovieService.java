@@ -7,7 +7,7 @@ import com.sanish.movie_service.entities.Movie;
 public interface MovieService {
     PagedResult<MovieDto> getAllMovies(Integer pageNumber);
 
-    MovieDto getMovieById(Long id);
+    MovieDto getMovieByMovieNumber(String movieNumber);
 
     void addNewMovie(MovieDto movieDto);
 
