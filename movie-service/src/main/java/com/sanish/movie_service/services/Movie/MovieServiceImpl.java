@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class MovieServiceImpl implements MovieService{
+public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
 
@@ -89,12 +89,20 @@ public class MovieServiceImpl implements MovieService{
         Movie convertedMovieObj = MovieMapper.mapToMovie(movieDto);
         convertedMovieObj.setId(movie.get().getId());
         convertedMovieObj.setUpdatedAt(LocalDateTime.now());
+        convertedMovieObj.setCreatedAt(movie.get().getCreatedAt());
 
         movieRepository.save(convertedMovieObj);
     }
 
     @Override
-    public void deleteMovieById(Long id) {
+    public void deleteMovieByMovieNumber(String movieNumber) {
+        Optional<Movie> movie = movieRepository.findByMovieNumber(movieNumber);
 
+        if(movie.isEmpty()){
+            throw new ResourceNotFoundException("Movie", "movieNumber", movieNumber);
+        }
+
+        movieRepository.deleteById(movie.get().getId());
     }
+
 }

@@ -3,7 +3,6 @@ package com.sanish.movie_service.controllers;
 import com.sanish.movie_service.dtos.Movie.MovieDto;
 import com.sanish.movie_service.dtos.Movie.PagedResult;
 import com.sanish.movie_service.dtos.ResponseDtos.SuccessResponseDto;
-import com.sanish.movie_service.entities.Movie;
 import com.sanish.movie_service.services.Movie.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/movies", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -54,6 +52,16 @@ class MovieController {
 
         return new ResponseEntity<>(
                 new SuccessResponseDto("200","Movie Details Updated Successfully!"),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/{movieNumber}")
+    public ResponseEntity<SuccessResponseDto> deleteMovie(@PathVariable String movieNumber){
+        movieService.deleteMovieByMovieNumber(movieNumber);
+
+        return new ResponseEntity<>(
+                new SuccessResponseDto("200", "Movie Details for movieNumber : " + movieNumber + " deleted successfully!"),
                 HttpStatus.OK
         );
     }
