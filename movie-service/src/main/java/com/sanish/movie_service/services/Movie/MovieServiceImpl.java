@@ -1,6 +1,6 @@
 package com.sanish.movie_service.services.Movie;
 
-import com.sanish.movie_service.dtos.Movie.PagedResult;
+import com.sanish.movie_service.dtos.ResponseDtos.PagedResult;
 import com.sanish.movie_service.dtos.Movie.MovieDto;
 import com.sanish.movie_service.entities.Movie;
 import com.sanish.movie_service.exceptions.ResourceAlreadyExistsException;

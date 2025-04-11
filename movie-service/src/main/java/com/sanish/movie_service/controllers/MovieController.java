@@ -1,7 +1,7 @@
 package com.sanish.movie_service.controllers;
 
 import com.sanish.movie_service.dtos.Movie.MovieDto;
-import com.sanish.movie_service.dtos.Movie.PagedResult;
+import com.sanish.movie_service.dtos.ResponseDtos.PagedResult;
 import com.sanish.movie_service.dtos.ResponseDtos.SuccessResponseDto;
 import com.sanish.movie_service.services.Movie.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;

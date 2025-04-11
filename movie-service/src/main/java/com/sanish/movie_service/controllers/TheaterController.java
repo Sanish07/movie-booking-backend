@@ -1,6 +1,6 @@
 package com.sanish.movie_service.controllers;
 
-import com.sanish.movie_service.dtos.Movie.PagedResult;
+import com.sanish.movie_service.dtos.ResponseDtos.PagedResult;
 import com.sanish.movie_service.dtos.ResponseDtos.SuccessResponseDto;
 import com.sanish.movie_service.dtos.Theater.TheaterDto;
 import com.sanish.movie_service.services.Theater.TheaterService;
@@ -33,6 +33,41 @@ public class TheaterController {
             @PathVariable String theaterNumber){
         TheaterDto theaterDto = theaterService.getTheaterByTheaterNumber(theaterNumber);
         return new ResponseEntity<>(theaterDto, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<SuccessResponseDto> addNewTheater(@RequestBody TheaterDto theaterDto){
+        theaterService.addNewTheater(theaterDto);
+
+        return new ResponseEntity<>(
+                new SuccessResponseDto(
+                        "201",
+                        "New Movie Added Successfully!"),
+                HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<SuccessResponseDto> updateTheatreDetails(@RequestBody TheaterDto theaterDto){
+        theaterService.updateTheaterDetails(theaterDto);
+
+        return new ResponseEntity<>(
+                new SuccessResponseDto(
+                        "200",
+                        "Theater Details Updated Successfully!"),
+                HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{theaterNumber}")
+    public ResponseEntity<SuccessResponseDto> deleteTheaterDetails(@PathVariable String theaterNumber){
+        theaterService.deleteTheaterByTheaterNumber(theaterNumber);
+
+        return new ResponseEntity<>(
+                new SuccessResponseDto(
+                        "200",
+                        "Theater Details for theaterNumber : "+theaterNumber+", deleted successfully!"
+                ),
+                HttpStatus.OK
+        );
     }
 
 }

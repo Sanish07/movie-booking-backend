@@ -1,7 +1,6 @@
 package com.sanish.movie_service.services.Theater;
 
-import com.sanish.movie_service.dtos.Movie.MovieDto;
-import com.sanish.movie_service.dtos.Movie.PagedResult;
+import com.sanish.movie_service.dtos.ResponseDtos.PagedResult;
 import com.sanish.movie_service.dtos.Theater.TheaterDto;
 
 public interface TheaterService {

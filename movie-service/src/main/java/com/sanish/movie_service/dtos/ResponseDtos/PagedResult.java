@@ -1,4 +1,4 @@
-package com.sanish.movie_service.dtos.Movie;
+package com.sanish.movie_service.dtos.ResponseDtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
