@@ -1,15 +1,14 @@
 package com.sanish.movie_service.controllers;
 
+import com.sanish.movie_service.dtos.ResponseDtos.SuccessResponseDto;
+import com.sanish.movie_service.dtos.Screen.ScreenDto;
 import com.sanish.movie_service.entities.Screen;
 import com.sanish.movie_service.services.Screen.ScreenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,10 +23,30 @@ public class ScreenController {
         this.screenService = screenService;
     }
 
-    @GetMapping("/{screenNumber}")
-    public ResponseEntity<List<Screen>> getSpecificScreenDetails(@PathVariable Integer screenNumber){
-        List<Screen> fetchedScreens = screenService.getScreenByScreenNumber(screenNumber);
-
+    @GetMapping("/{theaterNumber}")
+    public ResponseEntity<List<ScreenDto>> getAllTheaterScreens(@PathVariable String theaterNumber){
+        List<ScreenDto> fetchedScreens = screenService.getAllScreensByTheatreNumber(theaterNumber);
         return new ResponseEntity<>(fetchedScreens, HttpStatus.OK);
+    }
+
+    @PostMapping("/{theaterNumber}")
+    public ResponseEntity<SuccessResponseDto> addNewScreenForTheater(
+            @PathVariable String theaterNumber, @RequestBody ScreenDto screenDto){
+        screenService.addNewScreen(screenDto, theaterNumber);
+        return new ResponseEntity<>(
+                new SuccessResponseDto("201", "New Screen for theaterNumber : "+ theaterNumber+", added successfully!"),
+                HttpStatus.CREATED
+        );
+    }
+
+    @DeleteMapping("/{theaterNumber}")
+    public ResponseEntity<SuccessResponseDto> deleteTheatersScreen(
+            @PathVariable String theaterNumber,
+            @RequestParam("screen_number") Integer screenNumber){
+        screenService.deleteScreenByTheaterAndScreenNumber(theaterNumber,screenNumber);
+        return new ResponseEntity<>(
+                new SuccessResponseDto("200", "Screen deleted successfully!"),
+                HttpStatus.OK
+        );
     }
 }
