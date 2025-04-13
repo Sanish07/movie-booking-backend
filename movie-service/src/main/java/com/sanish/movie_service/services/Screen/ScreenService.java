@@ -9,6 +9,8 @@ import java.util.*;
 public interface ScreenService {
     List<ScreenDto> getAllScreensByTheatreNumber(String theatreNumber);
 
+    ScreenDto getByTheaterAndScreenNumber(String theatreNumber,Integer screenNumber);
+
     void addNewScreen(ScreenDto screenDto, String theatreNumber);
 
     void deleteScreenByTheaterAndScreenNumber(String theaterNumber,Integer screenNumber);

@@ -45,6 +45,17 @@ public class ScreenServiceImpl implements ScreenService{
     }
 
     @Override
+    public ScreenDto getByTheaterAndScreenNumber(String theatreNumber, Integer screenNumber) {
+        Theater fetchedTheater = theaterRepository.findByTheaterNumber(theatreNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Theatre","theaterNumber",theatreNumber));
+
+        Screen fetchedScreen = screenRepository.findByTheaterAndScreenNumber(fetchedTheater, screenNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Screen","screenNumber",screenNumber.toString()));
+
+        return ScreenMapper.mapToScreenDto(fetchedScreen);
+    }
+
+    @Override
     public void addNewScreen(ScreenDto screenDto, String theatreNumber) {
         //See if theater present to add screen for.
         Theater fetchedTheater = theaterRepository.findByTheaterNumber(theatreNumber)

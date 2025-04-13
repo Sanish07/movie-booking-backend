@@ -29,6 +29,14 @@ public class ScreenController {
         return new ResponseEntity<>(fetchedScreens, HttpStatus.OK);
     }
 
+    @GetMapping
+    public ResponseEntity<ScreenDto> getScreenDetails(
+            @RequestParam("theater_number") String theaterNumber,
+            @RequestParam("screen_number") Integer screenNumber){
+        ScreenDto fetchedScreen = screenService.getByTheaterAndScreenNumber(theaterNumber, screenNumber);
+        return new ResponseEntity<>(fetchedScreen, HttpStatus.OK);
+    }
+
     @PostMapping("/{theaterNumber}")
     public ResponseEntity<SuccessResponseDto> addNewScreenForTheater(
             @PathVariable String theaterNumber, @RequestBody ScreenDto screenDto){
