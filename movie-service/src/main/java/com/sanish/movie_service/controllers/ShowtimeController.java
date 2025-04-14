@@ -40,6 +40,12 @@ public class ShowtimeController {
         return new ResponseEntity<>(fetchedShow, HttpStatus.OK);
     }
 
+    @GetMapping("/movie/{movieNumber}")
+    public ResponseEntity<List<ShowtimeDto>> getAllMovieShowtime(@PathVariable String movieNumber){
+        List<ShowtimeDto> fetchedShowtimes = showtimeService.getAllShowtimesForMovie(movieNumber);
+        return new ResponseEntity<>(fetchedShowtimes,HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<SuccessResponseDto> addNewShow(
             @RequestBody ShowtimeDto showtimeDto,

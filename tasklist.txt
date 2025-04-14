@@ -1,0 +1,10 @@
+1. Building image of microservice
+   $ ./mvnw -pl movie-service spring-boot:build-image -DskipTests
+
+2. Running services locally
+   $ docker compose -f infra.yml start        # Will start the databases
+   $ docker compose -f services.yml start     # Will start the microservices
+   --------------------------- OR ----------------------------------------------
+   $ docker compose -f infra.yml -f services.yml start     # Will run one by one in same command
+
+   (Always make sure infra.yml and services.yml are in same flow i.e at same time both are - running, stopped, added, removed)

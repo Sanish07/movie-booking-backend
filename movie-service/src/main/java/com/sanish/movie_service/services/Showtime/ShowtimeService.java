@@ -11,6 +11,8 @@ public interface ShowtimeService {
 
     ShowtimeResponseDto getShowtimeByShowtimeNumber(String showtimeNumber);
 
+    List<ShowtimeDto> getAllShowtimesForMovie(String movieNumber);
+
     void addNewShowtime(ShowtimeDto showtimeDto, String movieNumber, String theaterNumber, Integer screenNumber);
 
     void deleteShowtime(String showtimeNumber);

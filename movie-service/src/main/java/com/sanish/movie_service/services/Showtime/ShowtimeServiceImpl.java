@@ -89,6 +89,21 @@ public class ShowtimeServiceImpl implements ShowtimeService{
     }
 
     @Override
+    public List<ShowtimeDto> getAllShowtimesForMovie(String movieNumber) {
+        Movie fetchedMovie = movieRepository.findByMovieNumber(movieNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie","movieNumber",movieNumber));
+
+        List<ShowtimeDto> fetchedShowtimes = showtimeRepository
+                .findAllByMovie(fetchedMovie)
+                .stream()
+                .map(ShowtimeMapper::mapToShowtimeDto)
+                .toList();
+
+        return fetchedShowtimes;
+    }
+
+
+    @Override
     public void addNewShowtime(
             ShowtimeDto showtimeDto, String movieNumber, String theaterNumber, Integer screenNumber) {
 

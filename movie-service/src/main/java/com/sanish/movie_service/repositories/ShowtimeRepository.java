@@ -14,5 +14,7 @@ public interface ShowtimeRepository extends JpaRepository<Showtime,Long>{
 
     Optional<Showtime> findByShowtimeNumber(String showtimeNumber);
 
+    List<Showtime> findAllByMovie(Movie movie);
+
     void deleteByShowtimeNumber(String showtimeNumber);
 }

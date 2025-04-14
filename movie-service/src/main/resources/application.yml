@@ -2,7 +2,7 @@ spring:
   application:
     name: movie-service
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:15432/postgres}
+    url: ${DB_URL:jdbc:postgresql://localhost:15432/postgres} #IF DB_URL is passed as env variable, it will be used, or the one after the (Colon - :)
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
 

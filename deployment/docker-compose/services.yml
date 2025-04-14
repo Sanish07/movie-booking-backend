@@ -1,0 +1,20 @@
+name: 'movie-booking-backend'
+services:
+  movie-service:
+    image: sanish07/movie-booking-movie-service
+    container_name: movie-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_URL=jdbc:postgresql://movie-service-db:5432/postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    depends_on:
+      movie-service-db:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
