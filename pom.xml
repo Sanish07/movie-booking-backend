@@ -20,5 +20,6 @@
 
     <modules>
         <module>movie-service</module>
+        <module>booking-service</module>
     </modules>
 </project>
