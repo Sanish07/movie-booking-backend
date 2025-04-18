@@ -32,7 +32,6 @@ public class RabbitMQConfig {
     //Defining, Direct exchange as type of routing mediator for RabbitMQ message queues
     @Bean
     DirectExchange exchange(){
-        System.out.println(applicationProperties);
         return new DirectExchange(applicationProperties.getBookingsEventsExchange());
     }
 
