@@ -19,14 +19,17 @@ public class BookingServiceImpl implements BookingService{
 
     private static final Logger log = LoggerFactory.getLogger(BookingServiceImpl.class);
     private final BookingRepository bookingRepository;
+    private final MovieServiceValidator movieValidator;
 
     @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository) {
+    public BookingServiceImpl(BookingRepository bookingRepository, MovieServiceValidator movieValidator) {
         this.bookingRepository = bookingRepository;
+        this.movieValidator = movieValidator;
     }
 
     @Override
     public BookingResponse addNewBooking(String username, BookingRequest bookingRequest) {
+        movieValidator.validate(bookingRequest);
         Booking newBooking = BookingMapper.mapToBooking(bookingRequest);
         newBooking.setUsername(username);
         newBooking.setCreatedAt(LocalDateTime.now());

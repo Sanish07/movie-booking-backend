@@ -20,12 +20,17 @@ public class MovieServiceClient {
 
     public Optional<ShowtimeResponse> getShowtimeByShowtimeNumber(String showtimeNumber){
         log.info("Calling movie-service to fetch showtime by number : " + showtimeNumber);
-        var showtime_response = restClient
-                .get()
-                .uri("/api/showtimes/{showtimeNumber}", showtimeNumber)
-                .retrieve()
-                .body(ShowtimeResponse.class);
+        try{
+            var showtime_response = restClient
+                    .get()
+                    .uri("/api/showtimes/{showtimeNumber}", showtimeNumber)
+                    .retrieve()
+                    .body(ShowtimeResponse.class);
 
-        return Optional.ofNullable(showtime_response);
+            return Optional.ofNullable(showtime_response);
+        } catch (Exception e) {
+            log.error("Error fetching showtime for showtimeNumber : " + showtimeNumber+"/n" + e);
+            return Optional.empty();
+        }
     }
 }

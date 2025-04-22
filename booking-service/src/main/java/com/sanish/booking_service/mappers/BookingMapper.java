@@ -7,6 +7,7 @@ import com.sanish.booking_service.entities.BookingStatus;
 import com.sanish.booking_service.entities.Ticket;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -16,12 +17,13 @@ public class BookingMapper {
         List<Ticket> ticketList = new ArrayList<>();
 
         Booking newBooking = Booking.builder()
+                .showtimeNumber(request.showtimeNumber())
                 .bookingNumber(UUID.randomUUID().toString())
                 .status(BookingStatus.NEW)
                 .customerName(request.customerName())
                 .customerEmail(request.customerEmail())
                 .customerPhone(request.customerPhone())
-                .bookingTime(request.bookingTime())
+                .bookingTime(LocalDateTime.now())
                 .build();
 
         Double totalPrice = 0.0;
@@ -31,6 +33,7 @@ public class BookingMapper {
             ticket.setTicketCode(ticketDto.ticketCode());
             ticket.setSeatNumber(ticketDto.seatNumber());
             ticket.setPrice(BigDecimal.valueOf(ticketDto.price()));
+            ticket.setCreatedAt(LocalDateTime.now());
             totalPrice += ticketDto.price().doubleValue();
             ticket.setBooking(newBooking);
             ticketList.add(ticket);
