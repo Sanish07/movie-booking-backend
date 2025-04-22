@@ -19,6 +19,7 @@ server:
 
 #Booking Queue names configuration for RabbitMQ
 bookings:
+  movie-service-url: "http://localhost:8081"         #Movie service url for interservice communication
   bookings-events-exchange: "bookings-exchange"
   new-bookings-queue: "new-bookings"
   successful-bookings-queue: "successful-bookings"

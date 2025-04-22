@@ -1,10 +1,11 @@
 --Tables :  1. bookings, 2. tickets
 -- Relationships : 1. One booking can have many tickets
 
--- Bookings Table
+-- Bookings Table -> showtime_number is column for communication with movie-service
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
     booking_number VARCHAR(50) UNIQUE NOT NULL,
+    showtime_number VARCHAR(50),
     username VARCHAR(100) NOT NULL,
     customer_name VARCHAR(255) NOT NULL,
     customer_email VARCHAR(255) NOT NULL,

@@ -21,6 +21,9 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "showtime_number")
+    private String showtimeNumber; //Column for mapping with showtime entity in movie-service
+
     @Column(name = "booking_number", nullable = false, unique = true)
     private String bookingNumber;
 

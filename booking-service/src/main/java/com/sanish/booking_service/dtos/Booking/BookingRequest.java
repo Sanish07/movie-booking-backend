@@ -2,7 +2,6 @@ package com.sanish.booking_service.dtos.Booking;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sanish.booking_service.dtos.Ticket.TicketDto;
-import com.sanish.booking_service.entities.Ticket;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
