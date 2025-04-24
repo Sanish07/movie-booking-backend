@@ -36,6 +36,7 @@ public class ShowtimeController {
 
     @GetMapping("/{showtimeNumber}")
     public ResponseEntity<ShowtimeResponseDto> getShow(@PathVariable String showtimeNumber){
+        simulateSlowResponse();
         ShowtimeResponseDto fetchedShow = showtimeService.getShowtimeByShowtimeNumber(showtimeNumber);
         return new ResponseEntity<>(fetchedShow, HttpStatus.OK);
     }
@@ -64,5 +65,13 @@ public class ShowtimeController {
         return new ResponseEntity<>(
                 new SuccessResponseDto("200","Show with showtimeNumber : " + showtimeNumber + ", deleted successfully!"),
                 HttpStatus.OK);
+    }
+
+    void simulateSlowResponse(){
+        try{
+            Thread.sleep(6000);
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
+        }
     }
 }

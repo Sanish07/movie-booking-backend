@@ -1,5 +1,6 @@
 package com.sanish.booking_service.clients.movie;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,11 @@ public class MovieServiceClient {
         this.restClient = restClient;
     }
 
+    //Retry annotation from resilience4j will retry calling the service as many times configured or default(3) times
+    @Retry(name = "movie-service")
     public Optional<ShowtimeResponse> getShowtimeByShowtimeNumber(String showtimeNumber){
         log.info("Calling movie-service to fetch showtime by number : " + showtimeNumber);
-        try{
+
             var showtime_response = restClient
                     .get()
                     .uri("/api/showtimes/{showtimeNumber}", showtimeNumber)
@@ -28,9 +31,6 @@ public class MovieServiceClient {
                     .body(ShowtimeResponse.class);
 
             return Optional.ofNullable(showtime_response);
-        } catch (Exception e) {
-            log.error("Error fetching showtime for showtimeNumber : " + showtimeNumber+"/n" + e);
-            return Optional.empty();
-        }
+
     }
 }
