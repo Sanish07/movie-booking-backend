@@ -36,7 +36,7 @@ public class ShowtimeController {
 
     @GetMapping("/{showtimeNumber}")
     public ResponseEntity<ShowtimeResponseDto> getShow(@PathVariable String showtimeNumber){
-        simulateSlowResponse();
+//        simulateSlowResponse();
         ShowtimeResponseDto fetchedShow = showtimeService.getShowtimeByShowtimeNumber(showtimeNumber);
         return new ResponseEntity<>(fetchedShow, HttpStatus.OK);
     }
