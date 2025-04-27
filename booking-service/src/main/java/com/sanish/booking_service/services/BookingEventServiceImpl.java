@@ -40,14 +40,8 @@ public class BookingEventServiceImpl implements BookingEventService {
         bookingEvent.setBookingNumber(event.bookingNumber());
         bookingEvent.setPayload(convertPayloadToString(event));
         bookingEvent.setCreatedAt(event.createdAt());
-    }
 
-    private String convertPayloadToString(Object object) {
-        try{
-            return objectMapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        bookingEventRepository.save(bookingEvent);
     }
 
     @Override
@@ -76,6 +70,14 @@ public class BookingEventServiceImpl implements BookingEventService {
     private <T>T convertStringToJsonPayload(String payloadString, Class<T> type) {
         try{
           return objectMapper.readValue(payloadString,type);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String convertPayloadToString(Object object) {
+        try{
+            return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
