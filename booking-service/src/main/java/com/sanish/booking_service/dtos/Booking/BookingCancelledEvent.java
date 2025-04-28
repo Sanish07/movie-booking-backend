@@ -5,13 +5,13 @@ import com.sanish.booking_service.dtos.Ticket.TicketDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//For new-bookings queue
-public record BookingAddedEvent(
+public record BookingCancelledEvent(
         String eventId,
         String bookingNumber,
         List<TicketDto> tickets,
         String customerName,
         String customerEmail,
         String customerPhone,
-        LocalDateTime createdAt) {
+        LocalDateTime createdAt,
+        String cancellationReason) {
 }

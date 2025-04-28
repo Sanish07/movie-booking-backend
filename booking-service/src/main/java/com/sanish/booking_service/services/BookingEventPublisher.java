@@ -2,6 +2,9 @@ package com.sanish.booking_service.services;
 
 import com.sanish.booking_service.ApplicationProperties;
 import com.sanish.booking_service.dtos.Booking.BookingAddedEvent;
+import com.sanish.booking_service.dtos.Booking.BookingCancelledEvent;
+import com.sanish.booking_service.dtos.Booking.BookingErrorEvent;
+import com.sanish.booking_service.dtos.Booking.BookingSuccessfulEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -26,6 +29,18 @@ public class BookingEventPublisher {
         this.send(applicationProperties.getNewBookingsQueue(), bookingAddedEvent);
     }
 
+    public void publish(BookingSuccessfulEvent bookingSuccessfulEvent) {
+        this.send(applicationProperties.getSuccessfulBookingsQueue(), bookingSuccessfulEvent);
+    }
+
+    public void publish(BookingCancelledEvent bookingCancelledEvent) {
+        this.send(applicationProperties.getCancelledBookingsQueue(), bookingCancelledEvent);
+    }
+
+    public void publish(BookingErrorEvent bookingErrorEvent){
+        this.send(applicationProperties.getErrorBookingsQueue(), bookingErrorEvent);
+    }
+
     private void send(String routingKey, Object payload){
         System.out.println("Publishing New/Pending Events... ");
         log.info("Exchange name : {} ", applicationProperties.getBookingsEventsExchange());
@@ -36,4 +51,6 @@ public class BookingEventPublisher {
                 routingKey,
                 payload);
     }
+
+
 }

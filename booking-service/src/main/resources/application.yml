@@ -26,6 +26,7 @@ bookings:
   cancelled-bookings-queue: "cancelled-bookings"
   error-bookings-queue: "error-bookings"
   publish-booking-events-job-cron: "*/5 * * * * *"   #Schedule events publishing for every 5 seconds
+  new-bookings-processing-job-cron: "*/10 * * * * *" #Schedule new booking processing every 10 seconds
 
 management:
   endpoints:

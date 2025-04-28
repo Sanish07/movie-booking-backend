@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sanish.booking_service.dtos.Booking.BookingAddedEvent;
+import com.sanish.booking_service.dtos.Booking.BookingCancelledEvent;
+import com.sanish.booking_service.dtos.Booking.BookingErrorEvent;
+import com.sanish.booking_service.dtos.Booking.BookingSuccessfulEvent;
 import com.sanish.booking_service.entities.BookingEvent;
 import com.sanish.booking_service.entities.BookingEventType;
 import com.sanish.booking_service.repositories.BookingEventRepository;
@@ -45,6 +48,42 @@ public class BookingEventServiceImpl implements BookingEventService {
     }
 
     @Override
+    public void save(BookingSuccessfulEvent event) {
+        BookingEvent bookingEvent = new BookingEvent();
+        bookingEvent.setEventId(event.eventId());
+        bookingEvent.setEventType(BookingEventType.BOOKING_SUCCESSFUL);
+        bookingEvent.setBookingNumber(event.bookingNumber());
+        bookingEvent.setPayload(convertPayloadToString(event));
+        bookingEvent.setCreatedAt(event.createdAt());
+
+        bookingEventRepository.save(bookingEvent);
+    }
+
+    @Override
+    public void save(BookingCancelledEvent event) {
+        BookingEvent bookingEvent = new BookingEvent();
+        bookingEvent.setEventId(event.eventId());
+        bookingEvent.setEventType(BookingEventType.BOOKING_CANCELLED);
+        bookingEvent.setBookingNumber(event.bookingNumber());
+        bookingEvent.setPayload(convertPayloadToString(event));
+        bookingEvent.setCreatedAt(event.createdAt());
+
+        bookingEventRepository.save(bookingEvent);
+    }
+
+    @Override
+    public void save(BookingErrorEvent event) {
+        BookingEvent bookingEvent = new BookingEvent();
+        bookingEvent.setEventId(event.eventId());
+        bookingEvent.setEventType(BookingEventType.BOOKING_PROCESSING_FAILED);
+        bookingEvent.setBookingNumber(event.bookingNumber());
+        bookingEvent.setPayload(convertPayloadToString(event));
+        bookingEvent.setCreatedAt(event.createdAt());
+
+        bookingEventRepository.save(bookingEvent);
+    }
+
+    @Override
     public void publishBookingEvents() {
         Sort sort = Sort.by("createdAt").ascending();
         List<BookingEvent> eventList = bookingEventRepository.findAll(sort);
@@ -61,6 +100,18 @@ public class BookingEventServiceImpl implements BookingEventService {
             case BOOKING_ADDED:
                 BookingAddedEvent bookingAddedEvent = convertStringToJsonPayload(event.getPayload(),BookingAddedEvent.class);
                 bookingEventPublisher.publish(bookingAddedEvent);
+                break;
+            case BOOKING_SUCCESSFUL:
+                BookingSuccessfulEvent bookingSuccessfulEvent = convertStringToJsonPayload(event.getPayload(),BookingSuccessfulEvent.class);
+                bookingEventPublisher.publish(bookingSuccessfulEvent);
+                break;
+            case BOOKING_CANCELLED:
+                BookingCancelledEvent bookingCancelledEvent = convertStringToJsonPayload(event.getPayload(),BookingCancelledEvent.class);
+                bookingEventPublisher.publish(bookingCancelledEvent);
+                break;
+            case BOOKING_PROCESSING_FAILED:
+                BookingErrorEvent bookingErrorEvent = convertStringToJsonPayload(event.getPayload(),BookingErrorEvent.class);
+                bookingEventPublisher.publish(bookingErrorEvent);
                 break;
             default:
                 log.warn("Unsupported BookingEventType: {}", eventType);

@@ -5,8 +5,7 @@ import com.sanish.booking_service.dtos.Ticket.TicketDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//For new-bookings queue
-public record BookingAddedEvent(
+public record BookingSuccessfulEvent(
         String eventId,
         String bookingNumber,
         List<TicketDto> tickets,
