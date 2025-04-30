@@ -1,5 +1,6 @@
 package com.sanish.booking_service.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +29,8 @@ public class Ticket {
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "booking_id")
     private Booking booking;
 

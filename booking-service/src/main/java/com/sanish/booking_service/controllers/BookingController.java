@@ -1,7 +1,9 @@
 package com.sanish.booking_service.controllers;
 
+import com.sanish.booking_service.dtos.Booking.BookingDetailsDto;
 import com.sanish.booking_service.dtos.Booking.BookingRequest;
 import com.sanish.booking_service.dtos.Booking.BookingResponse;
+import com.sanish.booking_service.dtos.Booking.BookingStatusDto;
 import com.sanish.booking_service.security.SecurityService;
 import com.sanish.booking_service.services.BookingService;
 import jakarta.validation.Valid;
@@ -11,10 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -38,6 +39,22 @@ public class BookingController {
         BookingResponse response = bookingService.addNewBooking(getUsername, bookingRequest);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{bookingNumber}")
+    public ResponseEntity<BookingStatusDto> getBookingStatusByBookingNumber(@PathVariable String bookingNumber){
+        String username = securityService.getLoginUserName();
+        log.info("Finding Booking information for bookingNumber : {}", bookingNumber);
+        BookingStatusDto response = bookingService.getBookingByNumber(bookingNumber);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<BookingDetailsDto>> getAllUserBookings(){
+        String username = securityService.getLoginUserName();
+        log.info("Getting all user bookings for user : {}",username);
+        List<BookingDetailsDto> allBookings = bookingService.getAllUserBookings(username);
+        return new ResponseEntity<>(allBookings,HttpStatus.OK);
     }
 
 }

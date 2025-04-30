@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> findByStatus(BookingStatus status);
     Optional<Booking> findByBookingNumber(String bookingNumber);
+    List<Booking> findByUsername(String username);
 }

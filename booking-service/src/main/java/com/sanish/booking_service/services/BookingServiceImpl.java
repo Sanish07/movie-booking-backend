@@ -1,8 +1,6 @@
 package com.sanish.booking_service.services;
 
-import com.sanish.booking_service.dtos.Booking.BookingAddedEvent;
-import com.sanish.booking_service.dtos.Booking.BookingRequest;
-import com.sanish.booking_service.dtos.Booking.BookingResponse;
+import com.sanish.booking_service.dtos.Booking.*;
 import com.sanish.booking_service.entities.Booking;
 import com.sanish.booking_service.entities.BookingEvent;
 import com.sanish.booking_service.entities.BookingStatus;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -60,6 +59,38 @@ public class BookingServiceImpl implements BookingService{
         for(Booking booking : bookings){
             processSingleBooking(booking);
         }
+    }
+
+    @Override
+    public BookingStatusDto getBookingByNumber(String bookingNumber) {
+        Booking booking = bookingRepository.findByBookingNumber(bookingNumber)
+                        .orElseThrow(() -> new ResourceNotFoundException("Booking","bookingNumber",bookingNumber));
+
+        return new BookingStatusDto(
+                booking.getBookingNumber(),
+                booking.getCustomerEmail(),
+                booking.getStatus());
+    }
+
+    @Override
+    public List<BookingDetailsDto> getAllUserBookings(String username) {
+        List<Booking> allUserBookings = bookingRepository.findByUsername(username);
+        List<BookingDetailsDto> response = allUserBookings.stream()
+                .map((booking) ->
+                        new BookingDetailsDto(
+                                booking.getShowtimeNumber(),
+                                booking.getBookingNumber(),
+                                booking.getUsername(),
+                                booking.getCustomerName(),
+                                booking.getCustomerEmail(),
+                                booking.getCustomerPhone(),
+                                booking.getTotalPrice().doubleValue(),
+                                booking.getStatus(),
+                                booking.getBookingTime(),
+                                booking.getTickets()
+                        )
+                ).toList();
+        return response;
     }
 
     private void processSingleBooking(Booking booking) {
