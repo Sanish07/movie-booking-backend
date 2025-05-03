@@ -18,3 +18,29 @@ services:
       resources:
         limits:
           memory: 700m
+
+  booking-service:
+    image: sanish07/movie-booking-booking-service
+    container_name: booking-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - BOOKINGS_MOVIE_SERVICE_URL=http://movie-service:8081
+      - DB_URL=jdbc:postgresql://booking-service-db:5432/postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - RABBITMQ_HOST=booking-rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
+    depends_on:
+      booking-service-db:
+        condition: service_healthy
+      booking-rabbitmq:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m

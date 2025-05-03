@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: booking-service
+  datasource: #Database configuration
+    url: ${DB_URL:jdbc:postgresql://localhost:15442/postgres} #IF DB_URL is passed as env variable, it will be used, or the one after the (Colon - :)
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  rabbitmq: #RabbitMQ Configuration
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+  jpa:
+    open-in-view: false
+
+server:
+  port: 8082
+  shutdown: graceful
+
+#Booking Queue names configuration for RabbitMQ
+bookings:
+  movie-service-url: "http://localhost:8081"         #Movie service url for interservice communication
+  bookings-events-exchange: "bookings-exchange"
+  new-bookings-queue: "new-bookings"
+  successful-bookings-queue: "successful-bookings"
+  cancelled-bookings-queue: "cancelled-bookings"
+  error-bookings-queue: "error-bookings"
+  publish-booking-events-job-cron: "*/5 * * * * *"   #Schedule events publishing for every 5 seconds
+  new-bookings-processing-job-cron: "*/10 * * * * *" #Schedule new booking processing every 10 seconds
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info: #Actuator git logging config
+    git:
+      mode: "full"
+
+#Resilience4j config
+resilience4j:
+  retry: #Retry config
+    backends:
+      movie-service:
+        max-attempts: 2
+        wait-duration: 1s
+  circuitbreaker: #check /actuator/circuitbreakers and /actuator/circuitbreakerevents path to see events and state of any service
+    backends:
+      movie-service: # For any successful calls circuitbreaker will go from OPEN to CLOSED state
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 6
+        minimum-number-of-calls: 4 #Number of failed calls to invoke circuitbreaker mechanism and transition from OPEN to OPEN_TO_HALF_OPEN state
+        wait-duration-in-open-state: 20s
+        permitted-number-of-calls-in-half-open-state: 2 #No. of failed/successful calls required in OPEN_TO_HALF_OPEN to transition to null or OPEN state respt.
+        failure-rate-threshold: 50
