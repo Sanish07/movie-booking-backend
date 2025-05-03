@@ -1,0 +1,36 @@
+#Majority of configuration copied from booking-service properties
+spring:
+  application:
+    name: notification-service
+  datasource: #Database configuration
+    url: ${DB_URL:jdbc:postgresql://localhost:15452/postgres} #IF DB_URL is passed as env variable, it will be used, or the one after the (Colon - :)
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  rabbitmq: #RabbitMQ Configuration
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+  jpa:
+    open-in-view: false
+
+server:
+  port: 8083
+  shutdown: graceful
+
+# Queue names configuration for RabbitMQ (As already configured in booking-service)
+notifications:
+  bookings-events-exchange: "bookings-exchange"
+  new-bookings-queue: "new-bookings"
+  successful-bookings-queue: "successful-bookings"
+  cancelled-bookings-queue: "cancelled-bookings"
+  error-bookings-queue: "error-bookings"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info: #Actuator git logging config
+    git:
+      mode: "full"
