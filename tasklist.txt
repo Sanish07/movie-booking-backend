@@ -1,5 +1,6 @@
 1. Building image of microservice
    $ ./mvnw -pl movie-service spring-boot:build-image -DskipTests
+   $ ./mvnw -pl booking-service spring-boot:build-image -DskipTests
 
 2. Running services locally
    $ docker compose -f infra.yml start        # Will start the databases
