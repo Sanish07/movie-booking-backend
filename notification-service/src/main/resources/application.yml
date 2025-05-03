@@ -20,6 +20,7 @@ server:
 
 # Queue names configuration for RabbitMQ (As already configured in booking-service)
 notifications:
+  support-email: sanish@gmail.com
   bookings-events-exchange: "bookings-exchange"
   new-bookings-queue: "new-bookings"
   successful-bookings-queue: "successful-bookings"

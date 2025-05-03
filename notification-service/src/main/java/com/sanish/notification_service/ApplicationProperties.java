@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @AllArgsConstructor
 @ConfigurationProperties(prefix = "notifications") //Annotate MainApplication with @ConfigurationPropertiesScan to stage this file for bean management
 public class ApplicationProperties {
+    String supportEmail;
     String bookingsEventsExchange;
     String newBookingsQueue;
     String successfulBookingsQueue;
