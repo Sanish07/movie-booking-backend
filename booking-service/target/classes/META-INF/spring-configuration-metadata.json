@@ -1,0 +1,42 @@
+{
+  "groups": [
+    {
+      "name": "bookings",
+      "type": "com.sanish.booking_service.ApplicationProperties",
+      "sourceType": "com.sanish.booking_service.ApplicationProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "bookings.bookings-events-exchange",
+      "type": "java.lang.String",
+      "sourceType": "com.sanish.booking_service.ApplicationProperties"
+    },
+    {
+      "name": "bookings.cancelled-bookings-queue",
+      "type": "java.lang.String",
+      "sourceType": "com.sanish.booking_service.ApplicationProperties"
+    },
+    {
+      "name": "bookings.error-bookings-queue",
+      "type": "java.lang.String",
+      "sourceType": "com.sanish.booking_service.ApplicationProperties"
+    },
+    {
+      "name": "bookings.movie-service-url",
+      "type": "java.lang.String",
+      "sourceType": "com.sanish.booking_service.ApplicationProperties"
+    },
+    {
+      "name": "bookings.new-bookings-queue",
+      "type": "java.lang.String",
+      "sourceType": "com.sanish.booking_service.ApplicationProperties"
+    },
+    {
+      "name": "bookings.successful-bookings-queue",
+      "type": "java.lang.String",
+      "sourceType": "com.sanish.booking_service.ApplicationProperties"
+    }
+  ],
+  "hints": []
+}
