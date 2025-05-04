@@ -42,9 +42,9 @@ services:
           memory: 500m
 
   #Notifications Service database
-  notifications-service-db:
+  notification-service-db:
     image: postgres:17-alpine
-    container_name: notifications-service-db
+    container_name: notification-service-db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
