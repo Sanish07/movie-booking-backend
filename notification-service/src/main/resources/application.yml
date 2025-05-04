@@ -13,6 +13,17 @@ spring:
     password: ${RABBITMQ_PASSWORD:guest}
   jpa:
     open-in-view: false
+  mail: #Mailhog config
+    host: ${MAIL_HOST:127.0.0.1}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:PLACEHOLDER}
+    password: ${MAIL_PASSWORD:PLACEHOLDER}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+              enable: true
 
 server:
   port: 8083

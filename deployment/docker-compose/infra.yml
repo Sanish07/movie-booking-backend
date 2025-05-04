@@ -1,6 +1,7 @@
+#yml file for configuring application's infrastructure related docker images and starting containers
 name: 'movie-booking-backend'
 services:
-
+  #Movie Service database
   movie-service-db:
     image: postgres:17-alpine
     container_name: movie-service-db
@@ -20,6 +21,7 @@ services:
         limits:
           memory: 500m
 
+  #Booking Service database
   booking-service-db:
     image: postgres:17-alpine
     container_name: booking-service-db
@@ -39,6 +41,7 @@ services:
         limits:
           memory: 500m
 
+  #Notifications Service database
   notifications-service-db:
     image: postgres:17-alpine
     container_name: notifications-service-db
@@ -58,6 +61,7 @@ services:
         limits:
           memory: 500m
 
+  #Rabbit MQ config - UI available at localhost:15672
   booking-rabbitmq:
     image: rabbitmq:4.0.9-management-alpine
     container_name: booking-rabbitmq
@@ -76,3 +80,11 @@ services:
       resources:
         limits:
           memory: 500m
+
+  #Mailhog - Sample Email Client for Demonstration purpose - UI available at localhost:8025
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
