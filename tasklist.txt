@@ -2,6 +2,7 @@
    $ ./mvnw -pl movie-service spring-boot:build-image -DskipTests
    $ ./mvnw -pl booking-service spring-boot:build-image -DskipTests
    $ ./mvnw -pl notification-service spring-boot:build-image -DskipTests
+   $ ./mvnw -pl api-gateway spring-boot:build-image -DskipTests
 
 2. Running services locally (cd to /deployment/docker-compose)
    $ docker compose -f infra.yml start        # Will start the databases
@@ -10,3 +11,10 @@
    $ docker compose -f infra.yml -f services.yml start     # Will run one by one in same command
 
    (Always make sure infra.yml and services.yml are in same flow i.e at same time both are - running, stopped, added, removed)
+
+3. Edit the hosts file in /etc/hosts and configure the movie-service and booking-service containers to point to 127.0.0.1
+   when running services in docker environment.
+
+   $ cat /etc/hosts
+
+   To see all hosts info
