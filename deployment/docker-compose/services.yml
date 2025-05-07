@@ -24,7 +24,7 @@ services:
     container_name: booking-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - BOOKINGS_MOVIE_SERVICE_URL=http://movie-service:8081
+      - BOOKINGS_MOVIE_SERVICE_URL=http://api-gateway:8100/movie
       - DB_URL=jdbc:postgresql://booking-service-db:5432/postgres
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
@@ -69,6 +69,21 @@ services:
         condition: service_healthy
       mailhog:
         condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+
+  api-gateway:
+    image: sanish07/movie-booking-api-gateway
+    container_name: api-gateway
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - MOVIE_SERVICE_URL=http://movie-service:8081
+      - BOOKING_SERVICE_URL=http://booking-service:8082
+    ports:
+      - "8100:8100"
+    restart: unless-stopped
     deploy:
       resources:
         limits:

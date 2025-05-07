@@ -1,0 +1,82 @@
+server:
+  port: 8100
+  shutdown: graceful
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: false
+      routes:
+        # Forward /movie/** to movie-service
+        - id: movie-service
+          uri: ${MOVIE_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/movie/**
+          filters:
+            - RewritePath=/movie/?(?<segment>.*), /${segment}
+          # All request starting with http://localhost:8100/movie/** -Forwarded to-> http://localhost:8081/**
+
+        # Forward /booking/** to booking-service
+        - id: booking-service
+          uri: ${BOOKING_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/booking/**
+          filters:
+            - RewritePath=/booking/?(?<segment>.*), /${segment}
+
+        # Expose OpenAPI docs for both the services at http://localhost:8100/webjars/swagger-ui/index.html
+        # Route OpenAPI doc request for movie
+        - id: movie-docs
+          uri: ${MOVIE_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/v3/api-docs/movie
+          filters:
+            - RewritePath=/v3/api-docs/movie, /v3/api-docs
+
+        # Route OpenAPI doc request for booking
+        - id: booking-docs
+          uri: ${BOOKING_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/v3/api-docs/booking
+          filters:
+            - RewritePath=/v3/api-docs/booking, /v3/api-docs
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Methods Access-Control-Allow-Headers RETAIN_FIRST
+
+  mvc:
+    problemdetails:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  tracing:
+    enabled: false
+    sampling:
+      probability: 1.0
+
+springdoc:
+  swagger-ui:
+    use-root-path: true
+#    urls: #Static documentation for both the services
+#      - name: movie
+#        url: /v3/api-docs/movie
+#      - name: booking
+#        url: /v3/api-docs/booking
